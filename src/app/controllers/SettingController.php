@@ -10,7 +10,6 @@ class SettingController extends Controller
     }
     public function addAction()
     {
-
         $data = [
             'title' => $this->escaper->escapeHtml($this->request->getPost('title')),
             'price' => $this->escaper->escapeHtml($this->request->getPost('price')),
@@ -32,7 +31,8 @@ class SettingController extends Controller
             $setting->save();
         } else {
             $connection = $this->container->get('db');
-            $connection->query("update `settings` set `title`='$data[title]' , `price`='$data[price]' , `stock`='$data[stock]' , `zipcode`='$data[zipcode]' where `id`='1' ");
+            $connection->query("update `settings` set `title`='$data[title]' ,\
+             `price`='$data[price]' , `stock`='$data[stock]' , `zipcode`='$data[zipcode]' where `id`='1' ");
              
         }
         $this->response->redirect("setting");

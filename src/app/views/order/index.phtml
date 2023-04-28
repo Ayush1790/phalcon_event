@@ -1,6 +1,7 @@
+<?php include_once APP_PATH . '/assets/header.php'; ?>
 <!-- Add Order Page -->
 <div style="margin-left:370px ;width:400px; background-color:aliceblue;border-radius:10px;margin-top:5px" \
-class="text-center p-2">
+ class="text-center p-2">
     <h2>Add Orders</h2>
     <?php echo $this->tag->form("order/add"); ?>
     <br>
@@ -23,7 +24,6 @@ class="text-center p-2">
                 "SELECT `name` FROM products",
                 \Phalcon\Db\Enum::FETCH_ASSOC
             );
-
             foreach ($order as $key => $value) {
                 echo "<option>$value[name]</option>";
             } ?>
@@ -39,6 +39,4 @@ class="text-center p-2">
     </p>
 
     </form>
-    <?php echo $this->tag->linkTo(['order/view', "View Products", 'class' => 'btn btn-info']); ?>
 </div>
-

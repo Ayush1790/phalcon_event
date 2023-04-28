@@ -1,7 +1,9 @@
 <?php
 
 use Phalcon\Mvc\Controller;
-
+use handler\Aware\Aware;
+use handler\Listener\Listener;
+use Phalcon\Events\Manager as EventsManager;
 class OrderController extends Controller
 {
     public function indexAction()
@@ -12,6 +14,15 @@ class OrderController extends Controller
 
     public function addAction()
     {
+        $eventsManager = new EventsManager();
+        $componant = new Aware();
+
+        $componant->setEventsManager($eventsManager);
+        $eventsManager->attach(
+            'order',
+            new Listener()
+        );
+        $componant->process();
         $data = [
             'c_name' => $this->escaper->escapeHtml($this->request->getPost('name')),
             'c_address' => $this->escaper->escapeHtml($this->request->getPost('address')),
@@ -27,6 +38,7 @@ class OrderController extends Controller
             ]
         );
         $orders->save();
+        $this->response->redirect();
     }
 
     public function viewAction(){

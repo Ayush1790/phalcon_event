@@ -1,8 +1,9 @@
 <?php
 
 use Phalcon\Mvc\Controller;
-
-
+use handler\Aware\Aware;
+use handler\Listener\Listener;
+use Phalcon\Events\Manager as EventsManager;
 class ProductController extends Controller
 {
     public function indexAction()
@@ -12,6 +13,15 @@ class ProductController extends Controller
 
     public function addAction()
     {
+        $eventsManager = new EventsManager();
+        $componant = new Aware();
+
+        $componant->setEventsManager($eventsManager);
+        $eventsManager->attach(
+            'product',
+            new Listener()
+        );
+        $componant->process();
         $data = [
             'name' => $this->escaper->escapeHtml($this->request->getPost('name')),
             'desc' => $this->escaper->escapeHtml($this->request->getPost('desc')),
@@ -26,7 +36,13 @@ class ProductController extends Controller
                 'name', 'desc', 'tags', 'price', 'stock'
             ]
         );
-        $products->save();
+        $res=$products->save();
+        if($res) {
+        $this->response->redirect();
+        } else {
+            // $this->flash->error("Error!!!!");
+            echo "error";
+        }
     }
     public function viewAction()
     {

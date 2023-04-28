@@ -11,6 +11,7 @@ use Phalcon\Url;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Config;
 use Phalcon\Escaper;
+use Phalcon\Flash\Direct as Flash;
 
 $config = new Config([]);
 
@@ -27,6 +28,10 @@ $loader->registerDirs(
         APP_PATH . "/models/",
     ]
 );
+$loader->registerNamespaces([
+    "handler\Listener" => APP_PATH . "/handlers/",
+    "handler\Aware" => APP_PATH . "/handlers/",
+]);
 
 $loader->register();
 
@@ -57,8 +62,27 @@ $container->set(
     }
 );
 
+// $container->set(
+//     'flash',
+//     function () {
+//         return new Flash([
+//             'error'   => 'alert alert-danger',
+//             'success' => 'alert alert-success',
+//             'notice'  => 'alert alert-info',
+//             'warning' => 'alert alert-warning'
+//         ]);
+//     }
+// );
 
 
+// $di->set('flash', function () {
+//     return new Flash([
+//         'error'   => 'alert alert-danger',
+//         'success' => 'alert alert-success',
+//         'notice'  => 'alert alert-info',
+//         'warning' => 'alert alert-warning'
+//     ]);
+// });
 
 
 $container->set(
@@ -84,6 +108,8 @@ $container->set(
     },
     true
 );
+
+
 $application = new Application($container);
 try {
     // Handle the request
