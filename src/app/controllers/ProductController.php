@@ -4,6 +4,7 @@ use Phalcon\Mvc\Controller;
 use handler\Aware\Aware;
 use handler\Listener\Listener;
 use Phalcon\Events\Manager as EventsManager;
+
 class ProductController extends Controller
 {
     public function indexAction()
@@ -36,11 +37,10 @@ class ProductController extends Controller
                 'name', 'desc', 'tags', 'price', 'stock'
             ]
         );
-        $res=$products->save();
-        if($res) {
-        $this->response->redirect();
+        $res = $products->save();
+        if ($res) {
+            $this->response->redirect();
         } else {
-            // $this->flash->error("Error!!!!");
             echo "error";
         }
     }
@@ -50,6 +50,6 @@ class ProductController extends Controller
             "SELECT * FROM products",
             \Phalcon\Db\Enum::FETCH_ASSOC
         );
-        $this->view->data=$product;
+        $this->view->data = $product;
     }
 }

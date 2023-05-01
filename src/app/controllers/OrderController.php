@@ -4,13 +4,13 @@ use Phalcon\Mvc\Controller;
 use handler\Aware\Aware;
 use handler\Listener\Listener;
 use Phalcon\Events\Manager as EventsManager;
+
 class OrderController extends Controller
 {
     public function indexAction()
     {
         //redirect to view
     }
-
 
     public function addAction()
     {
@@ -41,11 +41,12 @@ class OrderController extends Controller
         $this->response->redirect();
     }
 
-    public function viewAction(){
+    public function viewAction()
+    {
         $order = $this->db->fetchAll(
             "SELECT * FROM orders",
             \Phalcon\Db\Enum::FETCH_ASSOC
         );
-        $this->view->data=$order;
+        $this->view->data = $order;
     }
 }

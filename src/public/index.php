@@ -10,8 +10,13 @@ use Phalcon\Mvc\Application;
 use Phalcon\Url;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Config;
+use Phalcon\Session\Manager;
+use Phalcon\Session\Adapter\Stream;
 use Phalcon\Escaper;
 use Phalcon\Flash\Direct as Flash;
+use handler\Aware\Aware;
+use handler\Listener\Listener;
+use Phalcon\Events\Manager as EventsManager;
 
 $config = new Config([]);
 
@@ -31,6 +36,8 @@ $loader->registerDirs(
 $loader->registerNamespaces([
     "handler\Listener" => APP_PATH . "/handlers/",
     "handler\Aware" => APP_PATH . "/handlers/",
+    "handler\Events" => APP_PATH . "/handlers/",
+    "controllers" => APP_PATH . "/controllers/",
 ]);
 
 $loader->register();
@@ -109,8 +116,34 @@ $container->set(
     true
 );
 
+$container->set(
+    'session',
+    function () {
+        $session = new Manager();
+        $files = new Stream(
+            [
+                'savePath' => '/tmp',
+            ]
+        );
+
+        $session
+            ->setAdapter($files)
+            ->start();
+
+        return $session;
+    }
+);
 
 $application = new Application($container);
+
+$eventsManager = $container->get('eventsManager');
+
+$eventsManager->attach(
+    'application:beforeHandleRequest',
+    new Listener()
+);
+$container->set('EventsManager', $eventsManager);
+$application->setEventsManager($eventsManager);
 try {
     // Handle the request
     $response = $application->handle(
