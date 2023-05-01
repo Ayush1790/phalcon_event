@@ -26,5 +26,6 @@ class Aware extends Injectable implements EventsAwareInterface
     {
         $this->eventsManager->fire('product:beforeAddProduct', $this);
         $this->eventsManager->fire('order:beforeOrderProduct', $this);
+        $this->eventsManager->fire('access:beforeAccessChange', $this);
     }
 }
