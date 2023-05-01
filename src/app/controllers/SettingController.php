@@ -1,5 +1,5 @@
 <?php
-// namespace controllers;
+
 use Phalcon\Mvc\Controller;
 
 class SettingController extends Controller

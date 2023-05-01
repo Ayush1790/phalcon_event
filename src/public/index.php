@@ -1,8 +1,4 @@
 <?php
-// print_r(apache_get_modules());
-// echo "<pre>"; print_r($_SERVER); die;
-// $_SERVER["REQUEST_URI"] = str_replace("/phalt/","/",$_SERVER["REQUEST_URI"]);
-// $_GET["_url"] = "/";
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -13,10 +9,7 @@ use Phalcon\Config;
 use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Escaper;
-use Phalcon\Flash\Direct as Flash;
-use handler\Aware\Aware;
 use handler\Listener\Listener;
-use Phalcon\Events\Manager as EventsManager;
 
 $config = new Config([]);
 
@@ -38,6 +31,7 @@ $loader->registerNamespaces([
     "handler\Aware" => APP_PATH . "/handlers/",
     "handler\Events" => APP_PATH . "/handlers/",
     "controllers" => APP_PATH . "/controllers/",
+    "assets\heade"=>APP_PATH."/assets/"
 ]);
 
 $loader->register();
@@ -68,28 +62,6 @@ $container->set(
         return new Escaper();
     }
 );
-
-// $container->set(
-//     'flash',
-//     function () {
-//         return new Flash([
-//             'error'   => 'alert alert-danger',
-//             'success' => 'alert alert-success',
-//             'notice'  => 'alert alert-info',
-//             'warning' => 'alert alert-warning'
-//         ]);
-//     }
-// );
-
-
-// $di->set('flash', function () {
-//     return new Flash([
-//         'error'   => 'alert alert-danger',
-//         'success' => 'alert alert-success',
-//         'notice'  => 'alert alert-info',
-//         'warning' => 'alert alert-warning'
-//     ]);
-// });
 
 
 $container->set(
